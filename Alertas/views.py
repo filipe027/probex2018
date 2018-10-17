@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import datetime
+from fcm_django.fcm import fcm_send_topic_message
 
 from .models import Medicao
 
@@ -31,4 +32,5 @@ def latest_med(request, n_med):
 	return HttpResponse(data_f, content_type='application/json')
 
 def home(request):
+	fcm_send_topic_message(topic_name='news', message_body='Bairro de são josé', message_title='Alerta de Chuva')
 	return HttpResponse("Bem vindo ao site do Probex Chuvas 2018")
