@@ -22,6 +22,16 @@ def upload(request, loc, data, valor_med,senha):
 	else:
 		return HttpResponse("Senha Errada")
 
+def upload_server_date(request, loc, valor_med,senha):
+	if(senha=="probex2018"):
+		m = Medicao(localizacao=loc, data_med=datetime.datetime.now(), valor=valor_med)
+		m.save()
+		fcm_send_topic_message(topic_name='news', message_body='Nivel de chuva de %d mm no local: %s' %(valor_med, loc), message_title='Alerta em: %s' % loc)
+
+		return HttpResponse("Dado salvo no banco de dados com suscesso.")
+	else:
+		return HttpResponse("Senha Errada")
+
 def latest_med(request, n_med):
 	data = serializers.serialize('json', Medicao.objects.all().order_by('-id')[:n_med], fields=('localizacao', 'data_med', 'valor'))
 	data = json.loads(data)
@@ -32,5 +42,5 @@ def latest_med(request, n_med):
 	return HttpResponse(data_f, content_type='application/json')
 
 def home(request):
-	fcm_send_topic_message(topic_name='news', message_body='Bairro de são josé', message_title='Alerta de Chuva')
+	
 	return HttpResponse("Bem vindo ao site do Probex Chuvas 2018")
