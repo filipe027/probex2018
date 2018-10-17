@@ -24,7 +24,7 @@ def upload(request, loc, data, valor_med,senha):
 
 def upload_server_date(request, loc, valor_med,senha):
 	if(senha=="probex2018"):
-		m = Medicao(localizacao=loc, data_med=datetime.datetime.now(), valor=valor_med)
+		m = Medicao(localizacao=loc, data_med=datetime.now(), valor=valor_med)
 		m.save()
 		fcm_send_topic_message(topic_name='news', message_body='Nivel de chuva de %d mm no local: %s' %(valor_med, loc), message_title='Alerta em: %s' % loc)
 
